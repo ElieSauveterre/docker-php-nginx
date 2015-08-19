@@ -1,9 +1,10 @@
 FROM phusion/baseimage:0.9.16
-MAINTAINER Harsh Vakharia <harshjv@gmail.com>
+MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 
 # Default baseimage settings
 ENV HOME /root
 ENV MAX_UPLOAD "50M"
+ENV COMPOSER_VERSION 1.0.0-alpha10
 
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
@@ -35,6 +36,12 @@ RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc
 RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php5/fpm/php.ini
 
 RUN php5enmod mcrypt
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
+# Display version information
+RUN composer --version
+
 
 # Add nginx service
 RUN mkdir                                                               /etc/service/nginx
