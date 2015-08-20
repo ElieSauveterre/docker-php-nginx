@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y --force-yes nginx \
     php5-fpm php5-cli php5-mysql php5-mcrypt \
-    php5-curl php5-gd php5-intl && \
+    php5-curl php5-gd php5-intl php5-sqlite && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
