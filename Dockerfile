@@ -14,7 +14,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
     php5-fpm php5-cli php5-mysql php5-mcrypt \
-    php5-curl php5-gd php5-intl php5-sqlite && \
+    php5-curl php5-gd php5-intl php5-sqlite \
+    tesseract-ocr tesseract-ocr-eng && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
@@ -54,9 +55,9 @@ ADD build/php/run.sh                                                    /etc/ser
 RUN chmod +x                                                            /etc/service/phpfpm/run
 
 # Add nginx
-VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled"]
+VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled", "/etc/nginx/ssl"]
 
 # Workdir
 WORKDIR /var/www
 
-EXPOSE 80
+EXPOSE 80 443
