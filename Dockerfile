@@ -13,9 +13,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update software list, install php-nginx & clear cache
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
-    php5-fpm php5-cli php5-mysql php5-mcrypt \
-    php5-curl php5-gd php5-intl php5-sqlite \
-    tesseract-ocr tesseract-ocr-eng && \
+    php5-fpm php5-cli php5-mysql php5-mcrypt php5-dev \
+    php5-curl php5-gd php5-intl php5-sqlite phpunit \
+    tesseract-ocr tesseract-ocr-eng wget build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
@@ -35,8 +35,18 @@ RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php
 RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php5/cli/php.ini
 RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc/php5/fpm/php.ini
 RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php5/fpm/php.ini
+RUN echo "; zend_extension=xdebug.so" >                                     /etc/php5/fpm/conf.d/20-xdebug.ini
 
 RUN php5enmod mcrypt
+
+# Add GEOS
+RUN wget http://download.osgeo.org/geos/geos-3.5.0.tar.bz2
+RUN tar xjf geos-3.5.0.tar.bz2
+RUN cd geos-3.5.0 && ./configure --enable-php && make && make install
+RUN echo "; configuration for php geos module" >                            /etc/php5/mods-available/geos.ini
+RUN echo "; priority=50" >>                                                 /etc/php5/mods-available/geos.ini
+RUN echo "extension=geos.so" >>                                            /etc/php5/mods-available/geos.ini
+RUN php5enmod geos
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
