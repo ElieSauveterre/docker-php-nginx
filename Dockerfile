@@ -70,4 +70,4 @@ VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled", "/
 # Workdir
 WORKDIR /var/www
 
-EXPOSE 80 443
+EXPOSE 80 443 8000
