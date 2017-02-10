@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.16
+FROM phusion/baseimage:0.9.19
 MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 
 # Default baseimage settings
@@ -13,8 +13,8 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update software list, install php-nginx & clear cache
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
-    php5-fpm php5-cli php5-mysql php5-mcrypt php5-dev \
-    php5-curl php5-gd php5-intl php5-sqlite phpunit \
+    php7.0-fpm php7.0-cli php7.0-mysql php7.0-mcrypt php7.0-dev \
+    php7.0-curl php7.0-gd php7.0-intl php7.0-sqlite phpunit \
     tesseract-ocr tesseract-ocr-eng wget build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
@@ -28,25 +28,25 @@ RUN sed -i "s/http {/http {\n        client_max_body_size $MAX_UPLOAD;/"    /etc
 RUN mkdir -p                                                            /var/www
 
 # Configure PHP
-RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php5/fpm/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php5/fpm/php.ini
-RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g"                 /etc/php5/fpm/php-fpm.conf
-RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php5/cli/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php5/cli/php.ini
-RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc/php5/fpm/php.ini
-RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php5/fpm/php.ini
-RUN echo "; zend_extension=xdebug.so" >                                     /etc/php5/fpm/conf.d/20-xdebug.ini
+RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.0/fpm/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.0/fpm/php.ini
+RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g"                 /etc/php/7.0/fpm/php-fpm.conf
+RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.0/cli/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.0/cli/php.ini
+RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc/php/7.0/fpm/php.ini
+RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php/7.0/fpm/php.ini
+RUN echo "; zend_extension=xdebug.so" >                                     /etc/php/7.0/fpm/conf.d/20-xdebug.ini
 
-RUN php5enmod mcrypt
+RUN phpenmod mcrypt
 
 # Add GEOS
-RUN wget http://download.osgeo.org/geos/geos-3.5.0.tar.bz2
-RUN tar xjf geos-3.5.0.tar.bz2
-RUN cd geos-3.5.0 && ./configure --enable-php && make && make install
-RUN echo "; configuration for php geos module" >                            /etc/php5/mods-available/geos.ini
-RUN echo "; priority=50" >>                                                 /etc/php5/mods-available/geos.ini
-RUN echo "extension=geos.so" >>                                            /etc/php5/mods-available/geos.ini
-RUN php5enmod geos
+RUN wget http://download.osgeo.org/geos/geos-3.6.1.tar.bz2
+RUN tar xjf geos-3.6.1.tar.bz2
+RUN cd geos-3.6.1 && ./configure --enable-php && make && make install
+RUN echo "; configuration for php geos module" >                            /etc/php/7.0/mods-available/geos.ini
+RUN echo "; priority=50" >>                                                 /etc/php/7.0/mods-available/geos.ini
+RUN echo "extension=geos.so" >>                                            /etc/php/7.0/mods-available/geos.ini
+RUN phpenmod geos
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
