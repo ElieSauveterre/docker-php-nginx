@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update software list, install php-nginx & clear cache
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
-    php7.0-fpm php7.0-cli php7.0-mysql php7.0-mcrypt php7.0-dev \
+    php7.0-fpm php7.0-cli php7.0-mysql php7.0-mcrypt php7.0-dev php7.0-mbstring \
     php7.0-curl php7.0-gd php7.0-intl php7.0-sqlite phpunit \
     tesseract-ocr tesseract-ocr-eng wget build-essential && \
     apt-get clean && \
