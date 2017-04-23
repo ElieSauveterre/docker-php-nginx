@@ -4,7 +4,7 @@ MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 # Default baseimage settings
 ENV HOME /root
 ENV MAX_UPLOAD "50M"
-ENV COMPOSER_VERSION 1.0.0-alpha10
+ENV COMPOSER_VERSION 1.4.1
 
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
@@ -52,6 +52,13 @@ RUN phpenmod geos
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 # Display version information
 RUN composer --version
+
+# Install Python
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python3.5 get-pip.py
+RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.bashrc
+RUN export PATH=/root/.local/bin:$PATH
+RUN pip install awsebcli --upgrade --user
 
 
 # Add nginx service
