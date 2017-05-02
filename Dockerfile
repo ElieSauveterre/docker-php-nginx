@@ -77,9 +77,9 @@ RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.b
 RUN export PATH=/root/.local/bin:$PATH
 RUN pip install awsebcli --upgrade --user
 
-
 # Install to Node 7
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
+RUN apt-get install nodejs -y --force-yes
 
 # Add nginx service
 RUN mkdir                                                               /etc/service/nginx
