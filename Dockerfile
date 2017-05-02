@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
     php7.0-fpm php7.0-cli php7.0-mysql php7.0-mcrypt php7.0-dev php7.0-mbstring \
-    php7.0-curl php7.0-gd php7.0-intl php7.0-sqlite phpunit \
+    php7.0-curl php7.0-gd php7.0-intl php7.0-sqlite phpunit nodejs \
     tesseract-ocr tesseract-ocr-eng wget build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
@@ -53,6 +53,23 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Display version information
 RUN composer --version
 
+# Install Php tools
+RUN wget https://phar.phpunit.de/phploc.phar
+RUN chmod +x phploc.phar
+RUN mv phploc.phar /usr/local/bin/phploc
+
+RUN wget http://static.pdepend.org/php/latest/pdepend.phar
+RUN chmod +x pdepend.phar
+RUN mv pdepend.phar /usr/local/bin/pdepend
+
+RUN wget http://static.phpmd.org/php/latest/phpmd.phar
+RUN chmod +x phpmd.phar
+RUN mv phpmd.phar /usr/local/bin/phpmd
+
+RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+RUN chmod +x phpcs.phar
+RUN mv phpcs.phar /usr/local/bin/phpcs
+
 # Install Python
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.5 get-pip.py
@@ -60,6 +77,9 @@ RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.b
 RUN export PATH=/root/.local/bin:$PATH
 RUN pip install awsebcli --upgrade --user
 
+
+# Install to Node 7
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 
 # Add nginx service
 RUN mkdir                                                               /etc/service/nginx
