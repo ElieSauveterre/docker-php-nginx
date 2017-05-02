@@ -70,6 +70,10 @@ RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 RUN chmod +x phpcs.phar
 RUN mv phpcs.phar /usr/local/bin/phpcs
 
+RUN wget https://phar.phpunit.de/phpunit.phar
+RUN chmod +x phpunit.phar
+RUN mv phpunit.phar /usr/local/bin/phpunit
+
 # Install Python
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.5 get-pip.py
