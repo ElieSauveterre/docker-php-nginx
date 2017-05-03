@@ -45,7 +45,7 @@ RUN tar xjf geos-3.6.1.tar.bz2
 RUN cd geos-3.6.1 && ./configure --enable-php && make && make install
 RUN echo "; configuration for php geos module" >                            /etc/php/7.0/mods-available/geos.ini
 RUN echo "; priority=50" >>                                                 /etc/php/7.0/mods-available/geos.ini
-RUN echo "extension=geos.so" >>                                            /etc/php/7.0/mods-available/geos.ini
+RUN echo "; extension=geos.so" >>                                            /etc/php/7.0/mods-available/geos.ini
 RUN phpenmod geos
 
 # Install Composer
