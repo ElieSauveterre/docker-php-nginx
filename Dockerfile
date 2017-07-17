@@ -85,6 +85,8 @@ RUN pip install --upgrade --user awscli
 # Install to Node 7
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 RUN apt-get install nodejs -y --force-yes
+RUN npm install -g bower
+RUN npm install -g gulp
 
 # Add nginx service
 RUN mkdir                                                               /etc/service/nginx
@@ -117,4 +119,4 @@ VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled", "/
 # Workdir
 WORKDIR /var/www/backend
 
-EXPOSE 80 443 8000
+EXPOSE 80 443 8000 35729
