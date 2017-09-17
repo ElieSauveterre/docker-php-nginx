@@ -79,7 +79,7 @@ RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3.5 get-pip.py
 RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.bashrc
 RUN export PATH=/root/.local/bin:$PATH
-RUN pip install awsebcli --upgrade --user
+RUN pip install awsebcli==3.10.1 --upgrade --user
 RUN pip install --upgrade --user awscli
 
 # Install to Node 7
