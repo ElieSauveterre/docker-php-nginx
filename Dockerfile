@@ -113,6 +113,24 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 #ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+
+#####################################
+# Non-Root User:
+#####################################
+
+# Add a non-root user to prevent files being created with root permissions on host machine.
+ARG PUID=1000
+ARG PGID=1000
+
+ENV PUID ${PUID}
+ENV PGID ${PGID}
+
+RUN groupadd -g ${PGID} phpnginx && \
+    useradd -u ${PUID} -g phpnginx -m phpnginx && \
+    apt-get update -yqq
+
+USER phpnginx
+
 # Add nginx
 VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled", "/etc/nginx/ssl"]
 
