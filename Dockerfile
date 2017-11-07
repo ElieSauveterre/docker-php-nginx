@@ -98,38 +98,9 @@ RUN mkdir                                                               /etc/ser
 ADD build/php/run.sh                                                    /etc/service/phpfpm/run
 RUN chmod +x                                                            /etc/service/phpfpm/run
 
-# Fix user permissions
+
 RUN apt-get -y --no-install-recommends install \
     ca-certificates
-
-#RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
-#RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)" \
-#    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture).asc" \
-#    && gpg --verify /usr/local/bin/gosu.asc \
-#    && rm /usr/local/bin/gosu.asc \
-#    && chmod +x /usr/local/bin/gosu
-
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-
-#####################################
-# Non-Root User:
-#####################################
-
-# Add a non-root user to prevent files being created with root permissions on host machine.
-ARG PUID=1000
-ARG PGID=1000
-
-ENV PUID ${PUID}
-ENV PGID ${PGID}
-
-RUN groupadd -g ${PGID} phpnginx && \
-    useradd -u ${PUID} -g phpnginx -m phpnginx && \
-    apt-get update -yqq
-
-USER phpnginx
 
 # Add nginx
 VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled", "/etc/nginx/ssl"]
