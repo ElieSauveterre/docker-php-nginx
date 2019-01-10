@@ -1,4 +1,4 @@
-FROM sauveterre/docker-php-nginx
+FROM sauveterre/docker-php71-nginx
 MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 
 #####################################
