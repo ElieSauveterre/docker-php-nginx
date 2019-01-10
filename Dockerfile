@@ -16,7 +16,7 @@ RUN apt-get update && \
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
-    php7.1-fpm php7.1-cli php7.1-mysql php7.1-dev php7.1-mbstring \
+    php7.1-fpm php7.1-cli php7.1-mysql php7.1-dev php7.1-mbstring php7.1-mcrypt \
     php7.1-curl php7.1-gd php7.1-intl php7.1-sqlite phpunit nodejs \
     php-pear libmcrypt-dev libreadline-dev \
     tesseract-ocr tesseract-ocr-eng wget build-essential zip unzip && \
@@ -24,8 +24,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
            /var/tmp/*
-
-RUN pecl install mcrypt-1.0.1
 
 # Configure nginx
 RUN echo "daemon off;" >>                                                   /etc/nginx/nginx.conf
