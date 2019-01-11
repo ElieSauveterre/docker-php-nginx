@@ -19,7 +19,7 @@ RUN apt-get update && \
     php7.1-fpm php7.1-cli php7.1-mysql php7.1-dev php7.1-mbstring php7.1-mcrypt \
     php7.1-curl php7.1-gd php7.1-intl php7.1-sqlite php7.1-xml phpunit nodejs \
     php-pear libmcrypt-dev libreadline-dev \
-    tesseract-ocr tesseract-ocr-eng wget build-essential zip unzip && \
+    wget build-essential zip unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
@@ -78,19 +78,19 @@ RUN wget https://phar.phpunit.de/phpunit.phar
 RUN chmod +x phpunit.phar
 RUN mv phpunit.phar /usr/local/bin/phpunit
 
-# Install Python
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3.5 get-pip.py
-RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.bashrc
-RUN export PATH=/root/.local/bin:$PATH
-RUN pip install awsebcli==3.10.1 --upgrade --user
-RUN pip install --upgrade --user awscli
-
 # Install to Node 7
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 RUN apt-get install nodejs -y --force-yes
 RUN npm install -g bower
 RUN npm install -g gulp
+
+# Install Python
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python3.5 get-pip.py
+RUN echo "export PATH=/root/.local/bin:$PATH" >>                        /root/.bashrc
+RUN export PATH=/root/.local/bin:$PATH
+RUN LC_ALL=C.UTF-8 pip install awsebcli==3.14.9 --upgrade --user
+RUN pip install --upgrade --user awscli
 
 # Add nginx service
 RUN mkdir                                                               /etc/service/nginx
