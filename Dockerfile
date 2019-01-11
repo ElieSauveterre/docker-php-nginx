@@ -17,7 +17,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
     php7.1-fpm php7.1-cli php7.1-mysql php7.1-dev php7.1-mbstring php7.1-mcrypt \
-    php7.1-curl php7.1-gd php7.1-intl php7.1-sqlite phpunit nodejs \
+    php7.1-curl php7.1-gd php7.1-intl php7.1-sqlite php7.1-xml phpunit nodejs \
     php-pear libmcrypt-dev libreadline-dev \
     tesseract-ocr tesseract-ocr-eng wget build-essential zip unzip && \
     apt-get clean && \
