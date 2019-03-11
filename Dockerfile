@@ -54,8 +54,7 @@ RUN phpenmod geos
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
-# Display version information
-RUN composer --version
+RUN composer global require hirak/prestissimo
 
 # Install Php tools
 RUN wget https://phar.phpunit.de/phploc.phar
