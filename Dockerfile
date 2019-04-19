@@ -77,6 +77,9 @@ RUN wget https://phar.phpunit.de/phpunit.phar
 RUN chmod +x phpunit.phar
 RUN mv phpunit.phar /usr/local/bin/phpunit
 
+RUN php -r "readfile('http://get.sensiolabs.org/security-checker.phar');" > /usr/local/bin/security-checker
+RUN chmod +x /usr/local/bin/security-checker
+
 # Install to Node 7
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 RUN apt-get install nodejs -y --force-yes
