@@ -4,7 +4,7 @@ MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 # Default baseimage settings
 ENV HOME /root
 ENV MAX_UPLOAD "50M"
-ENV COMPOSER_VERSION 1.4.1
+ENV COMPOSER_VERSION 1.8.5
 
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
