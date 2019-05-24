@@ -61,17 +61,17 @@ RUN wget https://phar.phpunit.de/phploc.phar
 RUN chmod +x phploc.phar
 RUN mv phploc.phar /usr/local/bin/phploc
 
-RUN wget http://static.pdepend.org/php/latest/pdepend.phar
-RUN chmod +x pdepend.phar
-RUN mv pdepend.phar /usr/local/bin/pdepend
+#RUN wget http://static.pdepend.org/php/latest/pdepend.phar
+#RUN chmod +x pdepend.phar
+#RUN mv pdepend.phar /usr/local/bin/pdepend
 
-RUN wget http://static.phpmd.org/php/latest/phpmd.phar
-RUN chmod +x phpmd.phar
-RUN mv phpmd.phar /usr/local/bin/phpmd
+#RUN wget http://static.phpmd.org/php/latest/phpmd.phar
+#RUN chmod +x phpmd.phar
+#RUN mv phpmd.phar /usr/local/bin/phpmd
 
-RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-RUN chmod +x phpcs.phar
-RUN mv phpcs.phar /usr/local/bin/phpcs
+#RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+#RUN chmod +x phpcs.phar
+#RUN mv phpcs.phar /usr/local/bin/phpcs
 
 RUN wget https://phar.phpunit.de/phpunit.phar
 RUN chmod +x phpunit.phar
