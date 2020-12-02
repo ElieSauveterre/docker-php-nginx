@@ -4,7 +4,7 @@ MAINTAINER Elie Sauveterre <contact@eliesauveterre.com>
 # Default baseimage settings
 ENV HOME /root
 ENV MAX_UPLOAD "50M"
-ENV COMPOSER_VERSION 1.8.5
+ENV COMPOSER_VERSION 2.0.7
 
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
@@ -16,8 +16,8 @@ RUN apt-get update && \
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-get update && \
     apt-get install -y --force-yes nginx git \
-    php7.3-fpm php7.3-cli php7.3-mysql php7.3-dev php7.3-mbstring php7.3-imap \
-    php7.3-curl php7.3-gd php7.3-intl php7.3-sqlite php7.3-xml phpunit php7.3-bcmath nodejs \
+    php7.4-fpm php7.4-cli php7.4-mysql php7.4-dev php7.4-mbstring php7.4-imap \
+    php7.4-curl php7.4-gd php7.4-intl php7.4-sqlite php7.4-xml phpunit php7.4-bcmath nodejs \
     php-pear libmcrypt-dev libreadline-dev \
     wget build-essential zip unzip && \
     apt-get clean && \
@@ -32,14 +32,14 @@ RUN sed -i "s/http {/http {\n        client_max_body_size $MAX_UPLOAD;/"    /etc
 RUN mkdir -p                                                            /var/www
 
 # Configure PHP
-RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.3/fpm/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.3/fpm/php.ini
-RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g"                 /etc/php/7.3/fpm/php-fpm.conf
-RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.3/cli/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.3/cli/php.ini
-RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc/php/7.3/fpm/php.ini
-RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php/7.3/fpm/php.ini
-RUN echo "; zend_extension=xdebug.so" >                                     /etc/php/7.3/fpm/conf.d/20-xdebug.ini
+RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.4/fpm/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.4/fpm/php.ini
+RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g"                 /etc/php/7.4/fpm/php-fpm.conf
+RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/"                  /etc/php/7.4/cli/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = America\/Montreal/"    /etc/php/7.4/cli/php.ini
+RUN sed -i "s/upload_max_filesize = 2M/upload_max_filesize = $MAX_UPLOAD/"  /etc/php/7.4/fpm/php.ini
+RUN sed -i "s/post_max_size = 8M/post_max_size = $MAX_UPLOAD/"              /etc/php/7.4/fpm/php.ini
+RUN echo "; zend_extension=xdebug.so" >                                     /etc/php/7.4/fpm/conf.d/20-xdebug.ini
 
 RUN phpenmod mcrypt
 
@@ -47,44 +47,22 @@ RUN phpenmod mcrypt
 RUN wget http://download.osgeo.org/geos/geos-3.6.1.tar.bz2
 RUN tar xjf geos-3.6.1.tar.bz2
 RUN cd geos-3.6.1 && ./configure --enable-php && make && make install
-RUN echo "; configuration for php geos module" >                            /etc/php/7.3/mods-available/geos.ini
-RUN echo "; priority=50" >>                                                 /etc/php/7.3/mods-available/geos.ini
-RUN echo "; extension=geos.so" >>                                            /etc/php/7.3/mods-available/geos.ini
+RUN echo "; configuration for php geos module" >                            /etc/php/7.4/mods-available/geos.ini
+RUN echo "; priority=50" >>                                                 /etc/php/7.4/mods-available/geos.ini
+RUN echo "; extension=geos.so" >>                                            /etc/php/7.4/mods-available/geos.ini
 RUN phpenmod geos
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
-RUN composer global require hirak/prestissimo
 
 # Install Php tools
 RUN wget https://phar.phpunit.de/phploc.phar
 RUN chmod +x phploc.phar
 RUN mv phploc.phar /usr/local/bin/phploc
 
-#RUN wget http://static.pdepend.org/php/latest/pdepend.phar
-#RUN chmod +x pdepend.phar
-#RUN mv pdepend.phar /usr/local/bin/pdepend
-
-#RUN wget http://static.phpmd.org/php/latest/phpmd.phar
-#RUN chmod +x phpmd.phar
-#RUN mv phpmd.phar /usr/local/bin/phpmd
-
-#RUN wget https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-#RUN chmod +x phpcs.phar
-#RUN mv phpcs.phar /usr/local/bin/phpcs
-
 RUN wget https://phar.phpunit.de/phpunit.phar
 RUN chmod +x phpunit.phar
 RUN mv phpunit.phar /usr/local/bin/phpunit
-
-RUN php -r "readfile('http://get.sensiolabs.org/security-checker.phar');" > /usr/local/bin/security-checker
-RUN chmod +x /usr/local/bin/security-checker
-
-# Install to Node 7
-RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
-RUN apt-get install nodejs -y --force-yes
-RUN npm install -g bower
-RUN npm install -g gulp
 
 # Install Python
 RUN wget https://bootstrap.pypa.io/get-pip.py
